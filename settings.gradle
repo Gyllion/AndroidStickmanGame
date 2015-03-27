@@ -1,0 +1,2 @@
+include ':rssfeedlibrary'
+include 'core', 'android'
