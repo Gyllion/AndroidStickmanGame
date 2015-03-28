@@ -16,13 +16,13 @@ public class Background
     ArrayList<Texture> parallaxTextures;
     ArrayList<Sprite> spriteList;
     int[] yAxises;
-    float originX;
+    float previousX;
 
-    public Background(ArrayList<Texture> textures, int[] yAxises, float originalX)
+    public Background(ArrayList<Texture> textures, int[] yAxises, float initX)
     {
         parallaxTextures = textures;
         this.yAxises = yAxises;
-        originX = originalX;
+        previousX = initX;
 
         // Add sprites to the spritelist dependent on the amount of textures in the texturelist
         int countSprites = 1;
@@ -67,6 +67,14 @@ public class Background
         // Update every background with a factor
         for(int i = 1; i < spriteList.size(); i += 3)
         {
+            // Move elements parallax
+            if (i != spriteList.size() - 3)
+            {
+                spriteList.get(i).setX(spriteList.get(i).getX() + ((x - previousX) / 2));
+                spriteList.get(i + 1).setX(spriteList.get(i + 1).getX() + ((x - previousX) / 2));
+                spriteList.get(i + 2).setX(spriteList.get(i + 2).getX() + ((x - previousX) / 2));
+            }
+
             // Shift background if it's out of bounds
             // Left side
             if(spriteList.get(i).getX() > x  + Gdx.graphics.getHeight())
@@ -100,6 +108,9 @@ public class Background
                 spriteList.get(i + 2).setX(spriteList.get(i).getX() + spriteList.get(i).getTexture().getWidth());
             }
         }
+
+        // Updating the previous x
+        previousX = x;
     }
 
     public void draw(SpriteBatch batch)
