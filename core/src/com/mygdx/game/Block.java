@@ -32,6 +32,11 @@ public class Block
         return rectangle;
     }
 
+    public void setRectangle(Rectangle newRectangle)
+    {
+        this.rectangle = newRectangle;
+    }
+
     public void draw(SpriteBatch batch)
     {
         batch.draw(texture, position.x, position.y);
@@ -42,8 +47,18 @@ public class Block
         return new Vector2(position.x, position.y);
     }
 
+    public void setBlockPosition(Vector2 position)
+    {
+        this.position = position;
+    }
+
     public int getTextureHeight()
     {
         return texture.getHeight();
+    }
+
+    public Texture getTexture()
+    {
+        return texture;
     }
 }

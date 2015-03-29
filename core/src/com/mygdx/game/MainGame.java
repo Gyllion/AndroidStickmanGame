@@ -15,7 +15,7 @@ public class MainGame extends ApplicationAdapter implements GestureListener
 	SpriteBatch batch;
 	Player player;
     Camera camera;
-    TileMap map;
+    UnlimitedTilemap map;
     Background background;
 	
 	@Override
@@ -34,13 +34,7 @@ public class MainGame extends ApplicationAdapter implements GestureListener
         background = new Background(landscapeList, new int[]{0, 0, 0, -50}, player.getX());
 
         // Creating the map
-        Texture[] textArray = new Texture[3];
-        textArray[1] = new Texture("GrassBlock.png");
-        int[][] tmpMap = {
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-        };
-        map = new TileMap(textArray, tmpMap, -1000, -250);
+        map = new UnlimitedTilemap(new Texture("GrassBlock.png"), player.getX(), -255);
 	}
 
 	@Override
@@ -49,9 +43,10 @@ public class MainGame extends ApplicationAdapter implements GestureListener
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Update methods
-        player.update(map.getBlockArray());
+        player.update(map.getTileMap());
         camera.moveCamera(player.getX() + 50, 200);
         background.scroll(player.getX(), 0);
+        map.scroll(player.getX());
 
         // Draw methods
         batch.setProjectionMatrix(camera.getCombined());
