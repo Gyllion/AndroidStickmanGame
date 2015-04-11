@@ -33,7 +33,7 @@ public class Player
     // Drawing properties
     TextureRegion currentFrame;
     Sprite sprite;
-    int scale = 130;
+    int scale = 100;
 
     // Position properties
     float gravity;
@@ -49,10 +49,10 @@ public class Player
 
     public Player(int startX, int startY)
     {
-        standTexture = new Texture("AllyStandSheet.png");
-        runTexture = new Texture("AllyRunSheet.png");
-        standAnimation = new CAnimation(standTexture, 12, 1, 0.035f);
-        runAnimation = new CAnimation(runTexture, 5, 1, 0.035f);
+        standTexture = new Texture("Spritesheets/Stand.png");
+        runTexture = new Texture("Spritesheets/RunSheet.png");
+        standAnimation = new CAnimation(standTexture, 1, 1, 0.035f);
+        runAnimation = new CAnimation(runTexture, 5, 1, 0.04f);
 
         sprite = new Sprite(standAnimation.getCurrentFrame());
         sprite.setCenter(startX, startY);
@@ -88,25 +88,25 @@ public class Player
         if (Gdx.input.getAccelerometerY() * 2 > 1)
         {
             currentFrame = runAnimation.getCurrentFrame();
-            sprite.setScale((runAnimation.getFrameWidth() / scale) + 0.5f, runAnimation.getFrameHeight() / scale);
+            sprite.setScale((runAnimation.getFrameWidth() / scale) + 2.2f, runAnimation.getFrameHeight() / scale);
             collidedX = "left";
         }
         else if (Gdx.input.getAccelerometerY() * 2 < 1 && Gdx.input.getAccelerometerY() * 2 >= 0)
         {
             currentFrame = standAnimation.getCurrentFrame();
-            sprite.setScale((standAnimation.getFrameWidth() / scale) + 0.3f, standAnimation.getFrameHeight() / scale);
+            sprite.setScale((standAnimation.getFrameWidth() / scale) + 0.7f, standAnimation.getFrameHeight() / scale);
             collidedX = "right";
         }
         else if(Gdx.input.getAccelerometerY() * 2 < -1)
         {
             currentFrame = runAnimation.getCurrentFrame();
-            sprite.setScale((runAnimation.getFrameWidth() / scale) + 0.5f, runAnimation.getFrameHeight() / scale);
+            sprite.setScale((runAnimation.getFrameWidth() / scale) + 2.2f, runAnimation.getFrameHeight() / scale);
             collidedX = "right";
         }
         else
         {
             currentFrame = standAnimation.getCurrentFrame();
-            sprite.setScale((standAnimation.getFrameWidth() / scale) + 0.3f, standAnimation.getFrameHeight() / scale);
+            sprite.setScale((standAnimation.getFrameWidth() / scale) + 0.7f, standAnimation.getFrameHeight() / scale);
             collidedX = "left";
         }
 
@@ -134,12 +134,14 @@ public class Player
             leftFlag = false;
         }
 
-        // Speed adjustments
+        // Speed adjustments when colliding
         velocity.x = Gdx.input.getAccelerometerY() * 2;
         if (blockCollide(blockList))
         {
             velocity.y = 0f;
             isJumping = false;
+            // Snap to the top of the block
+            position.y = (getCollidedBlock(blockList).getBlockPosition().y + getCollidedBlock(blockList).getTextureHeight());
         }
         else
         {

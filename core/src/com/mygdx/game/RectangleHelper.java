@@ -9,7 +9,7 @@ public class RectangleHelper
 {
     public static boolean isTouchingTop(Rectangle r1, Rectangle r2)
     {
-        int penetrationMargin = 10;
+        int penetrationMargin = 15;
 
         float r1Bottom = r1.getY();
         float r1Left = r1.getX();
